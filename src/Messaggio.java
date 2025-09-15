@@ -28,18 +28,16 @@ public class Messaggio {
     public String getDataInvio() { return dataInvio; }
 
     public void setId(int id) { this.id = id; }
-
     public void setDataInvio(String dataInvio) { this.dataInvio = dataInvio; }
-
-
     public void setMittenteID(String mittenteID) {
         this.mittenteID = mittenteID;
     }
-
     public void setTitolo(String titolo) {
         this.titolo = titolo;
     }
-
+    public void setDestinatarioID(String destinatario){
+        this.destinatarioID = destinatario;
+    }
     public void setContenuto(String contenuto) {
         this.contenuto = contenuto;
     }
@@ -58,11 +56,11 @@ public class Messaggio {
 
     public String toStringShort() {
         return "Messaggio{" +
-                "id=" + id +
-                ", mittenteID='" + mittenteID + '\'' +
-                ", titolo='" + titolo + '\'' +
-                ",contenuto='" + contenuto + '\'' +
-                ", dataInvio='" + dataInvio + '\'' +
+                "\nid=" + id +
+                "\nmittenteID='" + mittenteID + '\'' +
+                "\ntitolo='" + titolo + '\'' +
+                "\ncontenuto='" + contenuto + '\'' +
+                "\ndataInvio='" + dataInvio + '\'' +
                 '}';
     }
 }

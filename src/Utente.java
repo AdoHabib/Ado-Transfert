@@ -1,6 +1,4 @@
 
-
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -124,6 +122,7 @@ public class Utente {
     public static boolean isEmailValida(String email) {
         return email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
     }
+    
 
     public static boolean isPasswordValida(String password) {
         return password.length() >= 8 &&

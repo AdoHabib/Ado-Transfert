@@ -1,15 +1,13 @@
 
+// Classe Indirizzo
 
-
-
-public // Classe Indirizzo
-class Indirizzo {
+public class Indirizzo {
     private String via;
     private String numeroCivico;
     private String citta;
     private String provincia;
     private String cap;
-    private String nazione = "Italia"; // Default value
+    private String nazione; 
 
     public Indirizzo(String via, String numeroCivico, String citta, String provincia, String cap) {
         this.via = via;
@@ -17,6 +15,7 @@ class Indirizzo {
         this.citta = citta;
         this.provincia = provincia;
         this.cap = cap;
+        this.nazione = "Italia"; // Default value
     }
 
     // Getters e Setters

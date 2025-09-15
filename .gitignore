@@ -1,0 +1,60 @@
+# File di configurazione con credenziali sensibili
+email_config.properties
+email_secrets.properties
+*.env
+.env
+
+# File di log
+*.log
+logs/
+
+# File temporanei
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# File di sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# File IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# File di build
+bin/
+build/
+target/
+out/
+
+# File di backup
+*.bak
+*.backup
+*~
+
+# File con password o credenziali
+*password*
+*secret*
+*credential*
+*key*
+
+# File di configurazione locale
+local.properties
+dev.properties
+prod.properties
+
+# File di test
+test-results/
+coverage/
+
+# File di documentazione generata
+docs/generated/
+
+# File di cache
+.cache/
+*.cache
