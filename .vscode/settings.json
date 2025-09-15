@@ -1,0 +1,10 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\Mouhammad Toure\\Downloads\\javase-3.5.2.jar",
+        "c:\\Users\\Mouhammad Toure\\Downloads\\core-3.5.0.jar",
+        "c:\\Users\\Mouhammad Toure\\Downloads\\mysql-connector-j-9.2.0.jar"
+    ]
+}
