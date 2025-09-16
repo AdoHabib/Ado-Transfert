@@ -1,6 +1,8 @@
 # File di configurazione con credenziali sensibili
 email_config.properties
 email_secrets.properties
+railway_secrets.properties
+railway.env
 *.env
 .env
 

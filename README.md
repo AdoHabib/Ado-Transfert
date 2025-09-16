@@ -258,6 +258,21 @@ Questo progetto è sviluppato per scopi educativi e di apprendimento.
 │                                                         │
 └─────────────────────────────────────────────────────────┘
 
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   Client GUI    │    │   Server RMI     │    │  Railway MySQL  │
+│                 │◄──►│                  │◄──►│                 │
+│  - Login        │    │  - App.java      │    │  - Database     │
+│  - Registrazione│    │  - InterfaceImpl │    │  - Tabelle      │
+│  - Transazioni  │    │  - Server.java   │    │  - Dati         │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+                                │
+                                ▼
+                       ┌──────────────────┐
+                       │   Gmail SMTP     │
+                       │                  │
+                       │  - Invio email   │
+                       │  - Reset password│
+                       └──────────────────┘
 
 **Sviluppato da**: Habib Ado  
 **Versione**: 1.0  
