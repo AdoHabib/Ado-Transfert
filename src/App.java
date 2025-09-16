@@ -1549,7 +1549,7 @@ public class App {
             message.setSubject("Reset Password - Ado-Transfert");
             
             // Link di reset (in produzione, sostituisci con il tuo dominio)
-            String resetLink = "https://yourdomain.com/reset-password?token=" + token + "&user=" + userID;
+            String resetLink = "https://ado-transfer-production.up.railway.app/reset-password.html?token=" + token + "&user=" + userID;
             
             // Contenuto HTML dell'email
             String htmlContent = createPasswordResetEmailHTML(userID, resetLink);
