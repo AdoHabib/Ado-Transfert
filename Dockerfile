@@ -1,5 +1,5 @@
 # Dockerfile per Ado-Transfert su Railway
-FROM openjdk:11-jre-slim
+FROM openjdk:11-jdk-slim
 
 # Installa dipendenze necessarie
 RUN apt-get update && apt-get install -y \

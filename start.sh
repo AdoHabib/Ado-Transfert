@@ -5,9 +5,8 @@ echo "🚀 Avvio Ado-Transfert su Railway..."
 
 # Verifica che Java sia installato
 if ! command -v java &> /dev/null; then
-    echo "❌ Java non trovato! Installando OpenJDK 11..."
-    apt-get update
-    apt-get install -y openjdk-11-jdk
+    echo "❌ Java non trovato!"
+    exit 1
 fi
 
 # Mostra versione Java

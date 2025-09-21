@@ -64,7 +64,8 @@ public class Cliente {
         System.out.println("3. Informazioni sull'applicazione");
         System.out.println("0. Uscire");
         System.out.print("Scelta: ");
-        
+        scanner.nextLine();
+
         try {
             int choice = leggiIntero(scanner.nextLine());
             scanner.nextLine(); // Consume newline

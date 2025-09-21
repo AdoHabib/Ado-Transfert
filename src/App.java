@@ -1169,7 +1169,7 @@ public class App {
     }
 
     private String getAdminID(Connection connection) throws SQLException {
-        String sql = "SELECT userID FROM utenti WHERE tipoUtente = 'ADMIN' LIMIT 1";
+        String sql = "SELECT userID FROM utenti WHERE tipoUtente = 'admin' LIMIT 1";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -1338,6 +1338,8 @@ public class App {
     public String about() throws RemoteException {
         return """
             Ado-Transfert v1.0
+            Un sistema di trasferimento denaro sicuro e affidabile.
+            Facile da comprendere e utilizzare.
             Sviluppato da Habib Ado
             Contatto: sistema@ado_transfert.com
             Per assistenza, invia un messaggio tramite la funzione di messaggistica.
@@ -1549,7 +1551,7 @@ public class App {
             message.setSubject("Reset Password - Ado-Transfert");
             
             // Link di reset (in produzione, sostituisci con il tuo dominio)
-            String resetLink = "https://ado-transfer-production.up.railway.app/reset-password.html?token=" + token + "&user=" + userID;
+            String resetLink = "https://ado-transfer.up.railway.app/reset-password.html?token=" + token + "&user=" + userID;
             
             // Contenuto HTML dell'email
             String htmlContent = createPasswordResetEmailHTML(userID, resetLink);
