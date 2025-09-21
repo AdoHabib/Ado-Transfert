@@ -55,5 +55,5 @@ echo "🚀 Avvio server RMI Ado-Transfert..."
 echo "   Porta RMI: 1099"
 echo "   Database: $ADO_DB_HOST:${ADO_DB_PORT:-3306}/${ADO_DB_NAME:-railway}"
 
-# Avvia il server
-java -cp "bin:lib/*" -Djava.rmi.server.hostname=$RAILWAY_PUBLIC_DOMAIN Server
+# Avvia il server Railway (senza interazione utente)
+java -cp "bin:lib/*" -Djava.rmi.server.hostname=$RAILWAY_PUBLIC_DOMAIN ServerRailway
