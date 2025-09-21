@@ -55,5 +55,15 @@ echo "🚀 Avvio server RMI Ado-Transfert..."
 echo "   Porta RMI: 1099"
 echo "   Database: $ADO_DB_HOST:${ADO_DB_PORT:-3306}/${ADO_DB_NAME:-railway}"
 
-# Avvia il server Railway (senza interazione utente)
-java -cp "bin:lib/*" -Djava.rmi.server.hostname=$RAILWAY_PUBLIC_DOMAIN ServerRailway
+# Avvia il server web in background
+echo "🌐 Avvio server web..."
+java -cp "bin:lib/*" WebServer &
+WEB_PID=$!
+
+# Avvia il server Railway RMI (senza interazione utente)
+echo "🚀 Avvio server RMI..."
+java -cp "bin:lib/*" -Djava.rmi.server.hostname=$RAILWAY_PUBLIC_DOMAIN ServerRailway &
+RMI_PID=$!
+
+# Mantieni entrambi i processi attivi
+wait $WEB_PID $RMI_PID
