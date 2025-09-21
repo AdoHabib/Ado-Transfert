@@ -16,7 +16,6 @@ public class Utente {
     private String tipo;
     private double saldo;
     private Indirizzo indirizzo;
-    private String nazione;
     private List<Messaggio> messaggi;
     private boolean verificato;
     private String dataCrezione;
@@ -91,7 +90,7 @@ public class Utente {
     }
 
     public String getNazione() {
-        return nazione;
+        return indirizzo.getNazione();
     }
 
     public List<Messaggio> getMessaggi() {
@@ -111,7 +110,7 @@ public class Utente {
     }
 
     public void setNazione(String nazione) {
-        this.nazione = nazione;
+        indirizzo.setNazione(nazione);
     }
 
     public void aggiungiMessaggio(Messaggio messaggio) {

@@ -15,7 +15,7 @@ public class Indirizzo {
         this.citta = citta;
         this.provincia = provincia;
         this.cap = cap;
-        this.nazione = "Italia"; // Default value
+        this.nazione = "Sénégal"; // Default value
     }
 
     // Getters e Setters
