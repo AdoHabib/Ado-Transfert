@@ -2,15 +2,24 @@
 echo 🚀 Ado-Transfert - Serveur RMI
 echo ===============================
 
-:: Configuration des variables d'environnement
-set ADO_DB_PASSWORD=System.getenv("ADO_DB_PASSWORD")
-set RAILWAY_PUBLIC_DOMAIN=System.getenv("RAILWAY_PUBLIC_DOMAIN")
+:: Configuration des variables d'environnement pour Railway
+:: Ces variables doivent être définies dans Railway ou localement pour le test
+if "%ADO_DB_PASSWORD%"=="" set ADO_DB_PASSWORD=1234
+if "%RAILWAY_PUBLIC_DOMAIN%"=="" set RAILWAY_PUBLIC_DOMAIN=localhost
 
 echo.
 echo 📋 Configuration:
-echo    Base de données: %ADO_DB_HOST%:%ADO_DB_PORT%/%ADO_DB_NAME%
+echo    Base de données: Railway MySQL (variables d'environnement)
 echo    Mot de passe DB: %ADO_DB_PASSWORD%
 echo    Domaine: %RAILWAY_PUBLIC_DOMAIN%
+echo.
+echo ⚠️  IMPORTANT: Pour utiliser Railway, définissez les variables d'environnement:
+echo    - ADO_DB_HOST (ex: containers-us-west-xxx.railway.app)
+echo    - ADO_DB_PORT (ex: 6543)
+echo    - ADO_DB_NAME (ex: railway)
+echo    - ADO_DB_USER (ex: root)
+echo    - ADO_DB_PASSWORD (votre mot de passe Railway)
+echo    - RAILWAY_PUBLIC_DOMAIN (votre domaine Railway)
 
 echo.
 echo 🔨 Compilation de l'application...
