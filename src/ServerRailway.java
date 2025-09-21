@@ -1,35 +1,29 @@
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Scanner;
 
 /**
- * Server principale per il sistema RMI Ado-Transfert
- * Avvia il registry RMI e registra il servizio bancario
+ * Server Railway per il sistema RMI Ado-Transfert
+ * Versione senza interazione utente per il deployment su Railway
  */
-public class Server {
+public class ServerRailway {
     private static final int PORT = 1099; // Porta standard RMI
     
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
         try {
-            System.out.println("=== SERVER RMI ADO-TRANSFERT ===");
+            System.out.println("=== SERVER RMI ADO-TRANSFERT (RAILWAY) ===");
             System.out.println("Avvio del server...");
             
-            // Richiedi la password del database
-            System.out.print("Inserisci la password del database MySQL (root): ");
-            String dbPassword = scanner.nextLine();
-            
-            // Se la password è vuota, usa quella di default
-            if (dbPassword.trim().isEmpty()) {
-                dbPassword = "1234";
-                System.out.println("Password non inserita, uso password di default: 1234");
+            // Per Railway, usa le variabili d'ambiente per la password del database
+            String dbPassword = System.getenv("ADO_DB_PASSWORD");
+            if (dbPassword == null || dbPassword.trim().isEmpty()) {
+                System.err.println("❌ ADO_DB_PASSWORD non impostata!");
+                System.exit(1);
             }
             
-            System.out.println("Connessione al database con le credenziali fornite...");
+            System.out.println("Connessione al database con credenziali Railway...");
             
-            // Esporta l'oggetto remoto con la password del database
+            // Esporta l'oggetto remoto con la password del database da variabili d'ambiente
             InterfaceImpl server = new InterfaceImpl(dbPassword);
             
             // Crea il registry sulla porta 1099 (porta standard RMI)
@@ -42,21 +36,21 @@ public class Server {
             
             System.out.println("=== SERVER AVVIATO CON SUCCESSO ===");
             System.out.println("Il server è in ascolto per connessioni client...");
-            System.out.println("Premi Ctrl+C per fermare il server");
+            System.out.println("Hostname Railway: " + System.getenv("RAILWAY_PUBLIC_DOMAIN"));
             
             // Mantiene il server in esecuzione
-            /*while (true) {
+            while (true) {
                 Thread.sleep(1000);
-            }*/
+            }
             
         } catch (RemoteException e) {
             System.err.println("Errore RMI: " + e.getMessage());
             e.printStackTrace();
+            System.exit(1);
         } catch (Exception e) {
             System.err.println("Errore generico: " + e.getMessage());
             e.printStackTrace();
-        } finally {
-            scanner.close();
+            System.exit(1);
         }
     }
 }

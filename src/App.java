@@ -1234,25 +1234,24 @@ public class App {
                 }
                 
                 // Crea la tabella utenti
-                String createUtentiSQL = """
-                    CREATE TABLE IF NOT EXISTS utenti (
-                        id INT AUTO_INCREMENT PRIMARY KEY, 
-                        tipoUtente ENUM('admin', 'cliente') NOT NULL, 
-                        nome VARCHAR(100) NOT NULL, 
-                        cognome VARCHAR(100) NOT NULL, 
-                        userID varchar(220) not null unique,
-                        email VARCHAR(255) NOT NULL UNIQUE, 
-                        password VARCHAR(255) NOT NULL, 
-                        indirizzo TEXT, 
-                        telefono VARCHAR(20) not null unique default 'N/A', 
-                        saldo decimal(15, 2) default 0.0 check(saldo >= 0),
-                        data_registrazione DATETIME DEFAULT CURRENT_TIMESTAMP, 
-                        verificato BOOLEAN DEFAULT FALSE, 
-                        token_verifica VARCHAR(255), 
-                        token_reset_password VARCHAR(255), 
-                        token_reset_scadenza DATETIME
-                    )
-                    """;
+                String createUtentiSQL = 
+                    "CREATE TABLE IF NOT EXISTS utenti (" +
+                    "    id INT AUTO_INCREMENT PRIMARY KEY, " +
+                    "    tipoUtente ENUM('admin', 'cliente') NOT NULL, " +
+                    "    nome VARCHAR(100) NOT NULL, " +
+                    "    cognome VARCHAR(100) NOT NULL, " +
+                    "    userID varchar(220) not null unique," +
+                    "    email VARCHAR(255), " +
+                    "    password VARCHAR(255) NOT NULL, " +
+                    "    indirizzo TEXT, " +
+                    "    telefono VARCHAR(20) not null unique default 'N/A', " +
+                    "    saldo decimal(15, 2) default 0.0 check(saldo >= 0)," +
+                    "    data_registrazione DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+                    "    verificato BOOLEAN DEFAULT FALSE, " +
+                    "    token_verifica VARCHAR(255), " +
+                    "    token_reset_password VARCHAR(255), " +
+                    "    token_reset_scadenza DATETIME" +
+                    ")";
                 
                 try (Statement statement = connection.createStatement()) {
                     statement.executeUpdate(createUtentiSQL);
@@ -1260,18 +1259,17 @@ public class App {
                 }
                 
                 // Crea la tabella messaggi
-                String createMessaggiSQL = """
-                    CREATE TABLE IF NOT EXISTS messaggi(
-                        id int auto_increment primary key,
-                        mittenteID varchar(220) not null,
-                        destinatarioID varchar(220) not null,
-                        titolo varchar(225) not null,
-                        contenuto text not null,
-                        dataInvio datetime default current_timestamp,
-                        foreign key (mittenteID) references utenti(userID) on delete cascade,
-                        foreign key (destinatarioID) references utenti(userID) on delete cascade
-                    )
-                    """;
+                String createMessaggiSQL = 
+                    "CREATE TABLE IF NOT EXISTS messaggi(" +
+                    "    id int auto_increment primary key," +
+                    "    mittenteID varchar(220) not null," +
+                    "    destinatarioID varchar(220) not null," +
+                    "    titolo varchar(225) not null," +
+                    "    contenuto text not null," +
+                    "    dataInvio datetime default current_timestamp," +
+                    "    foreign key (mittenteID) references utenti(userID) on delete cascade," +
+                    "    foreign key (destinatarioID) references utenti(userID) on delete cascade" +
+                    ")";
                 
                 try (Statement statement = connection.createStatement()) {
                     statement.executeUpdate(createMessaggiSQL);
@@ -1279,19 +1277,18 @@ public class App {
                 }
                 
                 // Crea la tabella indirizzi
-                String createIndirizziSQL = """
-                    CREATE TABLE IF NOT EXISTS indirizzi(
-                        id int auto_increment primary key,
-                        userID varchar(220) not null, 
-                        via varchar(220) not null,
-                        numeroCivico varchar(100) not null,
-                        citta varchar(220) not null,
-                        provincia varchar(220) not null,
-                        cap varchar(220) not null,
-                        nazione varchar(220),
-                        foreign key(userID) references utenti(userID) on delete cascade
-                    )
-                    """;
+                String createIndirizziSQL = 
+                    "CREATE TABLE IF NOT EXISTS indirizzi(" +
+                    "    id int auto_increment primary key," +
+                    "    userID varchar(220) not null, " +
+                    "    via varchar(220)," +
+                    "    numeroCivico varchar(100)," +
+                    "    citta varchar(220) not null," +
+                    "    provincia varchar(220)," +
+                    "    cap varchar(220)," +
+                    "    nazione varchar(220) not null default 'Sénégal'," +
+                    "    foreign key(userID) references utenti(userID) on delete cascade" +
+                    ")";
                 
                 try (Statement statement = connection.createStatement()) {
                     statement.executeUpdate(createIndirizziSQL);
@@ -1299,18 +1296,17 @@ public class App {
                 }
                 
                 // Crea la tabella transazioni
-                String createTransazioniSQL = """
-                    CREATE TABLE IF NOT EXISTS transazioni(
-                        id int auto_increment primary key,
-                        tipo varchar(220) not null,
-                        importo double not null check (importo > 0),
-                        mittenteID varchar(220) not null,
-                        destinatarioID varchar(220) not null,
-                        data_transazione timestamp default current_timestamp,
-                        foreign key(mittenteID) references utenti(userID) on delete cascade,
-                        foreign key(destinatarioID) references utenti(userID) on delete cascade
-                    )
-                    """;
+                String createTransazioniSQL = 
+                    "CREATE TABLE IF NOT EXISTS transazioni(" +
+                    "    id int auto_increment primary key," +
+                    "    tipo varchar(220) not null," +
+                    "    importo double not null check (importo > 0)," +
+                    "    mittenteID varchar(220) not null," +
+                    "    destinatarioID varchar(220) not null," +
+                    "    data_transazione timestamp default current_timestamp," +
+                    "    foreign key(mittenteID) references utenti(userID) on delete cascade," +
+                    "    foreign key(destinatarioID) references utenti(userID) on delete cascade" +
+                    ")";
                 
                 try (Statement statement = connection.createStatement()) {
                     statement.executeUpdate(createTransazioniSQL);
