@@ -10,6 +10,8 @@ public class InterfaceImpl extends UnicastRemoteObject implements InterfaceTrans
     private static final long serialVersionUID = 1L;
     private App app;
     
+    // === COSTRUTTORE InterfaceImpl.java ===
+    
     public InterfaceImpl(String dbPassword) throws RemoteException {
         super();
         app = new App(dbPassword);

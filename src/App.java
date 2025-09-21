@@ -1332,14 +1332,12 @@ public class App {
      * 
      */
     public String about() throws RemoteException {
-        return """
-            Ado-Transfert v1.0
-            Un sistema di trasferimento denaro sicuro e affidabile.
-            Facile da comprendere e utilizzare.
-            Sviluppato da Habib Ado
-            Contatto: sistema@ado_transfert.com
-            Per assistenza, invia un messaggio tramite la funzione di messaggistica.
-            """;
+        return "Ado-Transfert v1.0\n" +
+               "Un sistema di trasferimento denaro sicuro e affidabile.\n" +
+               "Facile da comprendere e utilizzare.\n" +
+               "Sviluppato da Habib Ado\n" +
+               "Contatto: sistema@ado_transfert.com\n" +
+               "Per assistenza, invia un messaggio tramite la funzione di messaggistica.";
     }
 
     /**
@@ -1585,68 +1583,67 @@ public class App {
      * Crea il contenuto HTML per l'email di reset password
      */
     private String createPasswordResetEmailHTML(String userID, String resetLink) {
-        return String.format("""
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="UTF-8">
-                <style>
-                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                    .header { background: linear-gradient(135deg, #0066cc, #004499); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-                    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-                    .button { display: inline-block; background: #0066cc; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; font-weight: bold; }
-                    .button:hover { background: #004499; }
-                    .warning { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin: 20px 0; }
-                    .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
-                </style>
-            </head>
-            <body>
-                <div class="container">
-                    <div class="header">
-                        <h1>🏦 Ado-Transfert</h1>
-                        <h2>Reset Password</h2>
-                    </div>
-                    
-                    <div class="content">
-                        <h3>Ciao %s,</h3>
-                        
-                        <p>Abbiamo ricevuto una richiesta per reimpostare la password del tuo account Ado-Transfert.</p>
-                        
-                        <p>Per procedere con il reset della password, clicca sul pulsante qui sotto:</p>
-                        
-                        <p style="text-align: center;">
-                            <a href="%s" class="button">🔑 Reimposta Password</a>
-                        </p>
-                        
-                        <div class="warning">
-                            <strong>⚠️ Importante:</strong>
-                            <ul>
-                                <li>Questo link è valido per <strong>2 ore</strong> dalla ricezione di questa email</li>
-                                <li>Se non hai richiesto il reset della password, ignora questa email</li>
-                                <li>Per motivi di sicurezza, non condividere questo link con altri</li>
-                            </ul>
-                        </div>
-                        
-                        <p>Se il pulsante non funziona, copia e incolla questo link nel tuo browser:</p>
-                        <p style="word-break: break-all; background: #e9ecef; padding: 10px; border-radius: 3px; font-family: monospace;">
-                            %s
-                        </p>
-                        
-                        <p>Se hai domande o problemi, contatta il nostro supporto tecnico.</p>
-                        
-                        <p>Cordiali saluti,<br>
-                        <strong>Team Ado-Transfert</strong></p>
-                    </div>
-                    
-                    <div class="footer">
-                        <p>Questa è un'email automatica, non rispondere a questo messaggio.</p>
-                        <p>© 2024 Ado-Transfert. Tutti i diritti riservati.</p>
-                    </div>
-                </div>
-            </body>
-            </html>
-            """, userID, resetLink, resetLink);
+        return String.format(
+            "<!DOCTYPE html>\n" +
+            "<html>\n" +
+            "<head>\n" +
+            "    <meta charset=\"UTF-8\">\n" +
+            "    <style>\n" +
+            "        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }\n" +
+            "        .container { max-width: 600px; margin: 0 auto; padding: 20px; }\n" +
+            "        .header { background: linear-gradient(135deg, #0066cc, #004499); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }\n" +
+            "        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }\n" +
+            "        .button { display: inline-block; background: #0066cc; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; font-weight: bold; }\n" +
+            "        .button:hover { background: #004499; }\n" +
+            "        .warning { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin: 20px 0; }\n" +
+            "        .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }\n" +
+            "    </style>\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "    <div class=\"container\">\n" +
+            "        <div class=\"header\">\n" +
+            "            <h1>🏦 Ado-Transfert</h1>\n" +
+            "            <h2>Reset Password</h2>\n" +
+            "        </div>\n" +
+            "        \n" +
+            "        <div class=\"content\">\n" +
+            "            <h3>Ciao %s,</h3>\n" +
+            "            \n" +
+            "            <p>Abbiamo ricevuto una richiesta per reimpostare la password del tuo account Ado-Transfert.</p>\n" +
+            "            \n" +
+            "            <p>Per procedere con il reset della password, clicca sul pulsante qui sotto:</p>\n" +
+            "            \n" +
+            "            <p style=\"text-align: center;\">\n" +
+            "                <a href=\"%s\" class=\"button\">🔑 Reimposta Password</a>\n" +
+            "            </p>\n" +
+            "            \n" +
+            "            <div class=\"warning\">\n" +
+            "                <strong>⚠️ Importante:</strong>\n" +
+            "                <ul>\n" +
+            "                    <li>Questo link è valido per <strong>2 ore</strong> dalla ricezione di questa email</li>\n" +
+            "                    <li>Se non hai richiesto il reset della password, ignora questa email</li>\n" +
+            "                    <li>Per motivi di sicurezza, non condividere questo link con altri</li>\n" +
+            "                </ul>\n" +
+            "            </div>\n" +
+            "            \n" +
+            "            <p>Se il pulsante non funziona, copia e incolla questo link nel tuo browser:</p>\n" +
+            "            <p style=\"word-break: break-all; background: #e9ecef; padding: 10px; border-radius: 3px; font-family: monospace;\">\n" +
+            "                %s\n" +
+            "            </p>\n" +
+            "            \n" +
+            "            <p>Se hai domande o problemi, contatta il nostro supporto tecnico.</p>\n" +
+            "            \n" +
+            "            <p>Cordiali saluti,<br>\n" +
+            "            <strong>Team Ado-Transfert</strong></p>\n" +
+            "        </div>\n" +
+            "        \n" +
+            "        <div class=\"footer\">\n" +
+            "            <p>Questa è un'email automatica, non rispondere a questo messaggio.</p>\n" +
+            "            <p>© 2024 Ado-Transfert. Tutti i diritti riservati.</p>\n" +
+            "        </div>\n" +
+            "    </div>\n" +
+            "</body>\n" +
+            "</html>", userID, resetLink, resetLink);
     }
     
     /**
