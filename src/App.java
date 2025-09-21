@@ -1744,10 +1744,9 @@ public class App {
             
             if (resultSet.next() && resultSet.getInt(1) == 0) {
                 // Crea l'utente amministratore di sistema
-                String createAdminSQL = """
-                    INSERT INTO utenti (userID, nome, cognome, email, password, tipoUtente, verificato, telefono) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                    """;
+                String createAdminSQL = 
+                    "INSERT INTO utenti (userID, nome, cognome, email, password, tipoUtente, verificato, telefono) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                 
                 try (PreparedStatement preparedStatement = connection.prepareStatement(createAdminSQL)) {
                     preparedStatement.setString(1, "Sistema");
