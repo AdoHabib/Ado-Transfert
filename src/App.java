@@ -1207,9 +1207,9 @@ public class App {
         try {
             System.out.println("Inizializzazione database...");
             
-            // Connessione al database usando la configurazione caricata
+            // Test de connexion avec gestion d'erreur améliorée
             try (Connection connection = DriverManager.getConnection(URL, DB_USER, DB_PASSWORD)) {
-                System.out.println("Connesso al database MySQL");
+                System.out.println("✅ Connesso al database MySQL");
                 
                 // Per Railway, il database esiste già, per MySQL locale crealo se necessario
                 if (!DB_HOST.contains("railway.app") && !DB_HOST.contains("containers-")) {
@@ -1322,6 +1322,31 @@ public class App {
             
         } catch (SQLException e) {
             System.err.println("❌ Errore durante l'inizializzazione del database: " + e.getMessage());
+            
+            // Messages d'erreur plus informatifs
+            if (e.getMessage().contains("Access denied")) {
+                System.err.println("🔐 Problème d'authentification MySQL:");
+                System.err.println("   - Vérifiez que l'utilisateur '" + DB_USER + "' existe");
+                System.err.println("   - Vérifiez que le mot de passe est correct");
+                System.err.println("   - Vérifiez que l'utilisateur a les permissions sur la base '" + DB_NAME + "'");
+                System.err.println("   - Pour MySQL local, essayez: mysql -u root -p");
+            } else if (e.getMessage().contains("Communications link failure")) {
+                System.err.println("🌐 Problème de connexion réseau:");
+                System.err.println("   - Vérifiez que MySQL est démarré");
+                System.err.println("   - Vérifiez que le port " + DB_PORT + " est accessible");
+                System.err.println("   - Vérifiez l'adresse " + DB_HOST);
+            } else if (e.getMessage().contains("Unknown database")) {
+                System.err.println("📊 Base de données introuvable:");
+                System.err.println("   - La base '" + DB_NAME + "' n'existe pas");
+                System.err.println("   - Créez-la avec: CREATE DATABASE " + DB_NAME + ";");
+            }
+            
+            System.err.println("🔧 Configuration actuelle:");
+            System.err.println("   Host: " + DB_HOST + ":" + DB_PORT);
+            System.err.println("   Database: " + DB_NAME);
+            System.err.println("   User: " + DB_USER);
+            System.err.println("   URL: " + URL.replace(DB_PASSWORD, "***"));
+            
             e.printStackTrace();
         }
     }

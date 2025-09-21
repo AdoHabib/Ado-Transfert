@@ -1,10 +1,12 @@
-# Ado-Transfert
+# 🏦 Ado-Transfert
 
-Un sistema di gestione delle transazioni bancarie sviluppato in Java con interfaccia a riga di comando.
+Un sistema completo di gestione transazioni finanziarie sviluppato in Java con tecnologia RMI e interfaccia grafica moderna.
 
 ## 📋 Panoramica
 
 Ado-Transfert è un'applicazione bancaria completa che permette agli utenti di gestire le proprie transazioni finanziarie, inclusi versamenti, prelievi e trasferimenti tra utenti. Il sistema include funzionalità di messaggistica, gestione profili e amministrazione utenti.
+
+**🌐 Versione Web**: Disponibile su Railway - [ado-transfer.up.railway.app](https://ado-transfer.up.railway.app)
 
 ## ✨ Funzionalità Principali
 
@@ -31,219 +33,195 @@ Ado-Transfert è un'applicazione bancaria completa che permette agli utenti di g
 - **Controllo accessi**: Gestione dei permessi utente (Admin/Cliente)
 
 ### 📱 Funzionalità Aggiuntive
+- **Interfaccia Web**: Accesso via browser su Railway
 - **Generazione QR Code**: Creazione di codici QR per contenuti personalizzati
 - **Validazione dati**: Controlli di sicurezza per email, password e numeri di telefono
 - **Gestione indirizzi**: Sistema completo per la gestione degli indirizzi utente
 
 ## 🏗️ Architettura del Sistema
 
+### Tecnologie Utilizzate
+- **Java 11**: Linguaggio di programmazione principale
+- **Java RMI**: Comunicazione client-server distribuita
+- **Java Swing**: Interfaccia grafica desktop
+- **MySQL**: Database per persistenza dati
+- **Railway**: Piattaforma di hosting cloud
+- **Docker**: Containerizzazione dell'applicazione
+
 ### Classi Principali
 
+#### `ServerRailway.java`
+- Server principale per il deployment su Railway
+- Gestisce le connessioni RMI senza interazione utente
+- Utilizza variabili d'ambiente per la configurazione
+
+#### `WebServer.java`
+- Serveur web HTTP per Railway
+- Serve le pagine web e l'API di statut
+- Gestisce l'interfaccia web de l'application
+
 #### `App.java`
-- Classe principale dell'applicazione
-- Gestisce il menu principale e la logica di navigazione
-- Contiene tutti i metodi per le operazioni bancarie e la gestione utenti
-
-#### `Utente.java`
-- Modello dati per gli utenti del sistema
-- Include validazione email/password e gestione hash
-- Gestisce saldo, indirizzo e messaggi associati
-
-#### `Messaggio.java`
-- Rappresenta i messaggi del sistema di comunicazione
-- Include timestamp automatico e gestione mittente/destinatario
-
-#### `Indirizzo.java`
-- Modello per gli indirizzi degli utenti
-- Supporta indirizzi completi con validazione
-
-#### `QRCodeGenerator.java`
-- Generatore di codici QR utilizzando la libreria ZXing
-- Supporta personalizzazione dimensioni e contenuto
+- Logique métier principale de l'application
+- Gère les opérations bancaires et la gestion des utilisateurs
+- Interface avec la base de données MySQL
 
 #### `AppGUI.java`
-- Classe per l'interfaccia grafica (attualmente vuota)
+- Interface graphique desktop avec Java Swing
+- Interface utilisateur moderne et intuitive
+- Gestion des événements et navigation
 
-## 🗄️ Database
+#### `InterfaceImpl.java`
+- Implémentation des méthodes RMI
+- Pont entre l'interface et la logique métier
+- Gestion des appels distants
 
-Il sistema utilizza MySQL con le seguenti tabelle principali:
+## 🚀 Installation et Démarrage
 
-### Tabelle del Database
-- **`utenti`**: Informazioni degli utenti (nome, cognome, email, password, saldo, tipo)
-- **`messaggi`**: Sistema di messaggistica interno
-- **`transazioni`**: Storico completo delle operazioni finanziarie
-- **`indirizzi`**: Indirizzi associati agli utenti
+### Prérequis
+- Java 11 ou supérieur
+- MySQL (pour le développement local)
+- Git
 
-### Configurazione Database
-```java
-URL: jdbc:mysql://localhost:3306/ado_transfert
-Username: root
-Password: 1234
+### Démarrage Local
+
+#### 1. Cloner le projet
+```bash
+git clone <repository-url>
+cd Ado-Transfert
 ```
 
-## 🚀 Installazione e Configurazione
+#### 2. Configuration de la base de données
+- Installer MySQL
+- Créer une base de données nommée `ado_transfert`
+- Configurer les variables d'environnement ou modifier la configuration dans `App.java`
 
-### Prerequisiti
-- Java 8 o superiore
-- MySQL Server
-- IDE Java (Eclipse, IntelliJ IDEA, VS Code)
+#### 3. Compilation
+```bash
+# Windows
+compile.bat
 
-### Dipendenze
-- MySQL Connector/J
-- ZXing Core e ZXing Java SE (per la generazione QR Code)
+# Linux/Mac
+javac -cp "lib/*" -d bin src/*.java
+```
 
-### Setup
-1. **Clona il repository**
-   ```bash
-   git clone [repository-url]
-   cd Ado-Transfert
-   ```
+#### 4. Démarrage des serveurs
 
-2. **Configura il database MySQL**
-   - Crea un database chiamato `ado_transfert`
-   - Aggiorna le credenziali in `App.java` se necessario
+**Serveur RMI (Terminal 1):**
+```bash
+# Windows
+start_server.bat
 
-3. **Compila il progetto**
-   ```bash
-   javac -cp "lib/*" src/*.java -d bin
-   ```
+# Linux/Mac
+java -cp "bin:lib/*" -Djava.rmi.server.hostname=localhost Server
+```
 
-4. **Esegui l'applicazione**
-   ```bash
-   java -cp "bin:lib/*" App
-   ```
+**Interface Graphique (Terminal 2):**
+```bash
+# Windows
+start_gui.bat
 
-## 📁 Struttura del Progetto
+# Linux/Mac
+java -cp "bin:lib/*" AppGUI
+```
+
+### Démarrage avec Interface Graphique (Recommandé)
+
+**Windows:**
+```bash
+start_gui_complete.bat
+```
+
+**Linux/Mac:**
+```bash
+./start_gui_complete.sh
+```
+
+## 🌐 Déploiement Railway
+
+### Configuration Automatique
+Le projet est configuré pour se déployer automatiquement sur Railway :
+
+1. **Variables d'environnement requises :**
+   - `ADO_DB_PASSWORD` : Mot de passe MySQL Railway
+
+2. **Variables optionnelles :**
+   - `ADO_EMAIL_USERNAME` : Email pour l'envoi de notifications
+   - `ADO_EMAIL_PASSWORD` : Mot de passe d'application email
+
+### Accès Web
+- **URL principale** : [ado-transfer.up.railway.app](https://ado-transfer.up.railway.app)
+- **Interface de connexion** : `/login.html`
+- **API de statut** : `/status`
+
+## 📁 Structure du Projet
 
 ```
 Ado-Transfert/
-├── src/                    # Codice sorgente
-│   ├── App.java           # Classe principale
-│   ├── AppGUI.java        # Interfaccia grafica (da implementare)
-│   ├── Utente.java        # Modello utente
-│   ├── Messaggio.java     # Modello messaggio
-│   ├── Indirizzo.java     # Modello indirizzo
-│   └── QRCodeGenerator.java # Generatore QR Code
-├── bin/                   # File compilati
-├── lib/                   # Librerie esterne
-└── README.md             # Documentazione
+├── Dockerfile              # Configuration Railway
+├── start.sh               # Script de démarrage Railway
+├── Procfile               # Configuration Railway
+├── railway.json           # Configuration Railway
+├── src/                   # Code source
+│   ├── App.java           # Logique métier
+│   ├── AppGUI.java        # Interface graphique
+│   ├── ServerRailway.java # Serveur Railway
+│   ├── WebServer.java     # Serveur web
+│   ├── InterfaceImpl.java # Implémentation RMI
+│   └── ...                # Autres classes
+├── lib/                   # Bibliothèques Java
+├── web/                   # Interface web
+└── bin/                   # Classes compilées
 ```
 
-## 🔐 Sicurezza
+## 🔧 Configuration
 
-- **Password**: Hash SHA-256 con codifica Base64
-- **Validazione**: Controlli rigorosi su email, password e numeri di telefono
-- **Transazioni**: Gestione transazionale per operazioni critiche
-- **Accesso**: Sistema di verifica utenti per prevenire accessi non autorizzati
+### Variables d'Environnement (Railway)
+- `ADO_DB_HOST` : Host de la base de données (automatique)
+- `ADO_DB_PORT` : Port de la base de données (automatique)
+- `ADO_DB_NAME` : Nom de la base de données (automatique)
+- `ADO_DB_USER` : Utilisateur de la base de données (automatique)
+- `ADO_DB_PASSWORD` : **Obligatoire** - Mot de passe MySQL Railway
+- `RAILWAY_PUBLIC_DOMAIN` : Domaine public Railway (automatique)
+- `PORT` : Port du serveur web (automatique)
 
-## 👥 Tipi di Utente
+### Configuration Email (Optionnelle)
+Pour activer l'envoi d'emails :
+- `ADO_EMAIL_USERNAME` : Adresse email Gmail
+- `ADO_EMAIL_PASSWORD` : Mot de passe d'application Gmail
 
-### Cliente
-- Gestione del proprio profilo
-- Operazioni bancarie (versamenti, prelievi, trasferimenti)
-- Sistema di messaggistica
-- Visualizzazione storico transazioni
+## 👥 Types d'Utilisateur
 
-### Amministratore
-- Tutte le funzionalità del cliente
-- Gestione e approvazione utenti
-- Controllo completo del sistema
-- Eliminazione utenti e messaggi
+### 🔹 Cliente
+- Effettua transazioni finanziarie
+- Gestisce il proprio profilo
+- Invia e riceve messaggi
+- Visualizza lo storico delle transazioni
 
-## 🎯 Account di Sistema
+### 🔹 Amministratore
+- Gestisce tutti gli utenti del sistema
+- Approva le registrazioni
+- Supervisiona le transazioni
+- Ha accesso completo alle funzionalità
 
-Il sistema include un account amministratore predefinito:
+## 📞 Support
+
+### Informazioni di Contatto
+- **Sviluppatore**: Habib Ado
 - **Email**: sistema@ado_transfert.com
-- **Password**: 123Lover
-- **Tipo**: Admin
+- **Versione**: 1.0.0
+- **Piattaforma**: Railway Cloud
 
-## 🔧 Personalizzazione
-
-### Modifica Credenziali Database
-Aggiorna le costanti in `App.java`:
-```java
-private static final String URL = "jdbc:mysql://localhost:3306/ado_transfert";
-private static final String USER = "root";
-private static final String PASSWORD = "1234";
-```
-
-### Configurazione QR Code
-Modifica i parametri in `QRCodeGenerator.java`:
-```java
-int larghezza = 300;  // Larghezza del QR Code
-int altezza = 300;    // Altezza del QR Code
-```
-
-## 🐛 Risoluzione Problemi
-
-### Errori di Connessione Database
-- **Errore**: `No suitable driver found for jdbc:mysql://localhost:3306/ado_transfert`
-- **Soluzione**: Scarica e aggiungi il MySQL Connector/J alla cartella `lib/`
-  1. Scarica `mysql-connector-java-8.0.33.jar` da [MySQL Downloads](https://dev.mysql.com/downloads/connector/j/)
-  2. Copia il file JAR nella cartella `lib/`
-  3. Ricompila con: `javac -cp "lib/*" -d bin src/*.java`
-  4. Esegui con: `java -cp "bin:lib/*" App`
-
-### Problemi di Compilazione
-- **Errore**: `NoClassDefFoundError: Messaggio`
-- **Soluzione**: Compila tutte le classi insieme:
-  ```bash
-  javac -d bin src/App.java src/Utente.java src/Messaggio.java src/Indirizzo.java src/AppGUI.java
-  ```
-
-- **Errore**: `package com.google.zxing does not exist`
-- **Soluzione**: Per utilizzare QRCodeGenerator, scarica le librerie ZXing:
-  1. Scarica `core-3.5.1.jar` e `javase-3.5.1.jar` da [ZXing Releases](https://github.com/zxing/zxing/releases)
-  2. Copia i file JAR nella cartella `lib/`
-  3. Compila con: `javac -cp "lib/*" -d bin src/*.java`
-
-### Comandi di Compilazione e Esecuzione
-
-#### Senza Dipendenze Esterne (Solo funzionalità base)
-```bash
-# Compila le classi principali
-javac -d bin src/App.java src/Utente.java src/Messaggio.java src/Indirizzo.java src/AppGUI.java
-
-# Esegui l'applicazione
-java -cp bin App
-```
-
-#### Con Tutte le Dipendenze
-```bash
-# Compila tutto (richiede MySQL Connector e ZXing in lib/)
-javac -cp "lib/*" -d bin src/*.java
-
-# Esegui con tutte le dipendenze
-java -cp "bin:lib/*" App
-```
-
-### Verifica Prerequisiti
-- Verifica che MySQL sia in esecuzione
-- Controlla le credenziali di connessione in `App.java`
-- Assicurati che il database `ado_transfert` esista
-- Controlla la versione di Java (richiede Java 8+)
-
-## 📝 Note di Sviluppo
-
-- Il progetto è sviluppato in Java puro senza framework esterni
-- L'interfaccia è attualmente a riga di comando
-- `AppGUI.java` è preparato per l'implementazione di un'interfaccia grafica
-- Il sistema è progettato per essere estensibile e modulare
-
-## 🤝 Contributi
-
-Per contribuire al progetto:
-1. Fork del repository
-2. Crea un branch per la tua feature
-3. Implementa le modifiche
-4. Testa accuratamente
-5. Crea una pull request
+### Assistenza
+- Per assistenza tecnica, utilizza il sistema di messaggistica integrato
+- Segnala problemi tramite l'interfaccia web
+- Consulta la documentazione Railway per il deployment
 
 ## 📄 Licenza
 
-Questo progetto è sviluppato per scopi educativi e di apprendimento.
+© 2024 Ado-Transfert Team. Tutti i diritti riservati.
 
 ---
+
 
 🏦 Ado-Transfert                    [Stato Connessione]
 
@@ -273,7 +251,5 @@ Questo progetto è sviluppato per scopi educativi e di apprendimento.
                        │  - Invio email   │
                        │  - Reset password│
                        └──────────────────┘
-
-**Sviluppato da**: Habib Ado  
-**Versione**: 1.0  
-**Ultimo aggiornamento**: 2024
+                       
+**🚀 Déployé avec succès sur Railway** - [ado-transfer.up.railway.app](https://ado-transfer.up.railway.app)
