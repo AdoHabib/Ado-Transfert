@@ -1053,44 +1053,33 @@ public class AppGUI extends JFrame {
         infoText.setLineWrap(true);
         infoText.setWrapStyleWord(true);
         
-        String aboutText = """
-            📋 DESCRIZIONE
-            
-            Ado-Transfert è un sistema completo di gestione transazioni finanziarie 
-            sviluppato con tecnologia Java RMI (Remote Method Invocation) e 
-            interfaccia grafica moderna.
-            
-            🚀 CARATTERISTICHE PRINCIPALI
-            
-            • Sistema di autenticazione sicuro con hash delle password
-            • Gestione completa degli utenti (registrazione, approvazione, amministrazione)
-            • Transazioni finanziarie: versamenti, prelievi, trasferimenti
-            • Sistema di messaggistica integrato
-            • Gestione indirizzi utente
-            • Storico completo delle transazioni
-            • Interfaccia grafica moderna e intuitiva
-            • Database MySQL per persistenza dati
-            • Architettura client-server con RMI
-            
-            👥 TIPI DI UTENTE
-            
-            🔹 Cliente: può effettuare transazioni, gestire il proprio profilo
-            🔹 Amministratore: gestisce utenti, approva registrazioni, supervisiona il sistema
-            
-            🛠️ TECNOLOGIE UTILIZZATE
-            
-            • Java Swing/AWT per l'interfaccia grafica
-            • Java RMI per la comunicazione client-server
-            • MySQL per il database
-            • JDBC per la connessione al database
-            
-            📞 SUPPORTO
-            
-            Per assistenza tecnica o segnalazioni, contatta il team di sviluppo.
-            
-            Versione: 1.0.0
-            © 2024 Ado-Transfert Team
-            """;
+        String aboutText = 
+            "📋 DESCRIZIONE\n\n" +
+            "Ado-Transfert è un sistema completo di gestione transazioni finanziarie \n" +
+            "sviluppato con tecnologia Java RMI (Remote Method Invocation) e \n" +
+            "interfaccia grafica moderna.\n\n" +
+            "🚀 CARATTERISTICHE PRINCIPALI\n\n" +
+            "• Sistema di autenticazione sicuro con hash delle password\n" +
+            "• Gestione completa degli utenti (registrazione, approvazione, amministrazione)\n" +
+            "• Transazioni finanziarie: versamenti, prelievi, trasferimenti\n" +
+            "• Sistema di messaggistica integrato\n" +
+            "• Gestione indirizzi utente\n" +
+            "• Storico completo delle transazioni\n" +
+            "• Interfaccia grafica moderna e intuitiva\n" +
+            "• Database MySQL per persistenza dati\n" +
+            "• Architettura client-server con RMI\n\n" +
+            "👥 TIPI DI UTENTE\n\n" +
+            "🔹 Cliente: può effettuare transazioni, gestire il proprio profilo\n" +
+            "🔹 Amministratore: gestisce utenti, approva registrazioni, supervisiona il sistema\n\n" +
+            "🛠️ TECNOLOGIE UTILIZZATE\n\n" +
+            "• Java Swing/AWT per l'interfaccia grafica\n" +
+            "• Java RMI per la comunicazione client-server\n" +
+            "• MySQL per il database\n" +
+            "• JDBC per la connessione al database\n\n" +
+            "📞 SUPPORTO\n\n" +
+            "Per assistenza tecnica o segnalazioni, contatta il team di sviluppo.\n\n" +
+            "Versione: 1.0.0\n" +
+            "© 2024 Ado-Transfert Team";
         
         infoText.setText(aboutText);
         infoText.setCaretPosition(0); // Inizia dall'inizio
