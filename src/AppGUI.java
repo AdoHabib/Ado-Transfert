@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class AppGUI extends JFrame {
     private static final String SERVER_HOST = System.getenv().getOrDefault("RAILWAY_PUBLIC_DOMAIN", "localhost");
-    private static final int SERVER_PORT = System.getenv().getOrDefault("PORT", 1099);
+    private static final int SERVER_PORT = 1099;
     private static final String SERVICE_NAME = "AdoTransfertService";
     
     private InterfaceTransfer serverStub;
