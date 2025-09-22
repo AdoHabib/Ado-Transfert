@@ -15,8 +15,8 @@ set ADO_DB_HOST=containers-us-west-xxx.railway.app
 set ADO_DB_PORT=6543
 set ADO_DB_NAME=railway
 set ADO_DB_USER=root
-set ADO_DB_PASSWORD=votre-mot-de-passe-railway
-set RAILWAY_PUBLIC_DOMAIN=votre-app.railway.app
+set ADO_DB_PASSWORD=jkeYsrFEDPTZouJvuiqDjnafVmSVlamW
+set RAILWAY_PUBLIC_DOMAIN=ado-transfer.up.railway.app
 
 echo ✅ Variables configurées:
 echo    ADO_DB_HOST=%ADO_DB_HOST%

@@ -3,13 +3,13 @@ echo 🧪 Ado-Transfert - Test Complet de l'Application
 echo =================================================
 
 :: Configuration des variables d'environnement
-set ADO_DB_PASSWORD=1234
-set RAILWAY_PUBLIC_DOMAIN=localhost
+set ADO_DB_PASSWORD=jkeYsrFEDPTZouJvuiqDjnafVmSVlamW
+set RAILWAY_PUBLIC_DOMAIN=ado-transfer.up.railway.app
 set PORT=8080
 
 echo.
 echo 📋 Configuration de test:
-echo    Base de données: localhost:3306/ado_transfert
+echo    Base de données: %ADO_DB_HOST%:%ADO_DB_PORT%/%ADO_DB_NAME%
 echo    Mot de passe DB: %ADO_DB_PASSWORD%
 echo    Domaine: %RAILWAY_PUBLIC_DOMAIN%
 echo    Port web: %PORT%
@@ -55,7 +55,7 @@ if %errorlevel% equ 0 (
 echo.
 echo 🌐 Étape 5: Test de l'interface web...
 echo    Ouverture de l'interface web dans le navigateur...
-start http://localhost:%PORT%
+start http://%RAILWAY_PUBLIC_DOMAIN%:%PORT%
 
 echo.
 echo 🖥️ Étape 6: Lancement de l'interface graphique...

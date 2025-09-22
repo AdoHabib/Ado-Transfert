@@ -14,17 +14,20 @@ echo 3. ADO_DB_NAME - Nom de la base de données Railway
 echo 4. ADO_DB_USER - Utilisateur de la base de données Railway
 echo 5. ADO_DB_PASSWORD - Mot de passe de la base de données Railway
 echo 6. RAILWAY_PUBLIC_DOMAIN - Domaine public Railway
+echo 7. ADO_EMAIL_USERNAME - Email pour l'envoi de notifications
 echo.
 
 echo 📝 Saisissez les informations de votre projet Railway:
 echo.
 
-set /p RAILWAY_DB_HOST="Host de la base de données (ex: containers-us-west-xxx.railway.app): "
-set /p RAILWAY_DB_PORT="Port de la base de données (ex: 6543): "
-set /p RAILWAY_DB_NAME="Nom de la base de données (ex: railway): "
-set /p RAILWAY_DB_USER="Utilisateur de la base de données (ex: root): "
-set /p RAILWAY_DB_PASSWORD="Mot de passe de la base de données: "
-set /p RAILWAY_DOMAIN="Domaine public Railway (ex: votre-app.railway.app): "
+set /p RAILWAY_DB_HOST=mysql.railway.internal
+set /p RAILWAY_DB_PORT=3306
+set /p RAILWAY_DB_NAME=railway
+set /p RAILWAY_DB_USER=root
+set /p RAILWAY_DB_PASSWORD=jkeYsrFEDPTZouJvuiqDjnafVmSVlamW
+set /p RAILWAY_DOMAIN=ado-transfer.up.railway.app
+set /p ADO_EMAIL_USERNAME=adobinesse@gmail.com
+set /p ADO_EMAIL_PASSWORD=xxpc vsgl mnli ufbw
 
 echo.
 echo 🔧 Configuration des variables d'environnement...
@@ -34,6 +37,8 @@ set ADO_DB_NAME=%RAILWAY_DB_NAME%
 set ADO_DB_USER=%RAILWAY_DB_USER%
 set ADO_DB_PASSWORD=%RAILWAY_DB_PASSWORD%
 set RAILWAY_PUBLIC_DOMAIN=%RAILWAY_DOMAIN%
+set ADO_EMAIL_USERNAME=%ADO_EMAIL_USERNAME%
+set ADO_EMAIL_PASSWORD=%ADO_EMAIL_PASSWORD%
 
 echo.
 echo ✅ Variables configurées:

@@ -4,10 +4,10 @@ echo ===============================
 
 :: Configuration des variables d'environnement pour Railway
 :: Ces variables doivent être définies dans Railway ou localement pour le test
-if "%ADO_DB_PASSWORD%"=="" set ADO_DB_PASSWORD=System.getenv("ADO_DB_PASSWORD")
-if "%RAILWAY_PUBLIC_DOMAIN%"=="" set RAILWAY_PUBLIC_DOMAIN=System.getenv("RAILWAY_PUBLIC_DOMAIN")
+if "%ADO_DB_PASSWORD%"=="" set ADO_DB_PASSWORD=jkeYsrFEDPTZouJvuiqDjnafVmSVlamW
+if "%RAILWAY_PUBLIC_DOMAIN%"=="" set RAILWAY_PUBLIC_DOMAIN=ado-transfer.up.railway.app
 
-echo.
+    echo.
 echo 📋 Configuration:
 echo    Base de données: Railway MySQL (variables d'environnement)
 echo    Mot de passe DB: %ADO_DB_PASSWORD%

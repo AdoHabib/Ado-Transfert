@@ -15,7 +15,7 @@ set ADO_DB_PORT=43111
 set ADO_DB_NAME=railway
 set ADO_DB_USER=root
 set ADO_DB_PASSWORD=jkeYsrFEDPTZouJvuiqDjnafVmSVlamW
-set RAILWAY_PUBLIC_DOMAIN=localhost
+set RAILWAY_PUBLIC_DOMAIN=ado-transfer.up.railway.app
 
 echo ✅ Variables configurées:
 echo    ADO_DB_HOST=%ADO_DB_HOST%
