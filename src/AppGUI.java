@@ -14,8 +14,8 @@ import java.util.List;
  * Implementa una GUI completa con design professionale
  */
 public class AppGUI extends JFrame {
-    private static final String SERVER_HOST = "localhost";
-    private static final int SERVER_PORT = 1099;
+    private static final String SERVER_HOST = System.getenv().getOrDefault("RAILWAY_PUBLIC_DOMAIN", "localhost");
+    private static final int SERVER_PORT = System.getenv().getOrDefault("PORT", 1099);
     private static final String SERVICE_NAME = "AdoTransfertService";
     
     private InterfaceTransfer serverStub;
@@ -194,8 +194,9 @@ public class AppGUI extends JFrame {
         
         // Campi del form
         String[] labels = {"Nome:", "Cognome:", "User ID:", "Telefono:", "Email:", "Password:"};
-        JTextField[] fields = new JTextField[labels.length];
+        final JTextField[] fields = new JTextField[labels.length - 1]; // -1 perché password è separato
         
+        JPasswordField passwordField = null;
         for (int i = 0; i < labels.length; i++) {
             gbc.gridwidth = 1; gbc.gridy = i + 1; gbc.gridx = 0; gbc.anchor = GridBagConstraints.WEST;
             gbc.fill = GridBagConstraints.NONE;
@@ -203,7 +204,7 @@ public class AppGUI extends JFrame {
             
             gbc.gridx = 1; gbc.fill = GridBagConstraints.HORIZONTAL;
             if (i == 5) { // Password field
-                JPasswordField passwordField = new JPasswordField(20);
+                passwordField = new JPasswordField(20);
                 passwordField.setFont(new Font("Arial", Font.PLAIN, 14));
                 centerPanel.add(passwordField, gbc);
             } else {
@@ -212,6 +213,7 @@ public class AppGUI extends JFrame {
                 centerPanel.add(fields[i], gbc);
             }
         }
+        final JPasswordField finalPasswordField = passwordField;
         
         // Pulsanti
         gbc.gridx = 0; gbc.gridy = labels.length + 2; gbc.gridwidth = 2;
@@ -227,7 +229,7 @@ public class AppGUI extends JFrame {
             String userID = fields[2].getText().trim();
             String telefono = fields[3].getText().trim();
             String email = fields[4].getText().trim();
-            String password = new String(((JPasswordField) centerPanel.getComponent(centerPanel.getComponentCount() - 1)).getPassword());
+            String password = new String(finalPasswordField.getPassword());
             
             if (validateRegistration(nome, cognome, userID, telefono, email, password)) {
                 performRegistration(nome, cognome, userID, telefono, email, password);
