@@ -1,9 +1,9 @@
 @echo off
-echo 🌐 Ado-Transfert - Test Connessione Railway
-echo ==========================================
+echo 🚀 Ado-Transfert - Deployment Railway
+echo ====================================
 
 echo.
-echo 📋 Test di connessione al server Railway
+echo 📋 Configuration Railway per deployment
 echo.
 
 :: Variables Railway pour la base de données
@@ -34,12 +34,18 @@ if %errorlevel% neq 0 (
 echo ✅ Compilation réussie
 
 echo.
-echo 🌐 Test de connexion au serveur Railway...
-echo    L'interface va se connecter à: %RAILWAY_PUBLIC_DOMAIN%
+echo 🚀 Démarrage du serveur Railway...
+echo    Le serveur va démarrer avec l'hostname Railway
+echo    Domaine public: %RAILWAY_PUBLIC_DOMAIN%
+echo.
+echo ⚠️  IMPORTANT: Pour le deployment Railway:
+echo    1. Le serveur doit essere avviato su Railway
+echo    2. L'interface graphique deve connettersi a: %RAILWAY_PUBLIC_DOMAIN%
+echo    3. Assicurati che le porte siano aperte su Railway
 echo.
 
-java -cp "bin;lib\*" AppGUI
+java -cp "bin;lib\*" -Djava.rmi.server.hostname=%RAILWAY_PUBLIC_DOMAIN% ServerRailway
 
 echo.
-echo 🏁 Test terminé.
+echo 🏁 Server Railway avviato.
 pause

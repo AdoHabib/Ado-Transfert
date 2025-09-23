@@ -71,6 +71,7 @@ public class AppGUI extends JFrame {
         createLoginScreen();
         createRegistrationScreen();
         createClientDashboard();
+        createCollaboratoreDashboard();
         createAdminDashboard();
         
         // Layout finale
@@ -253,6 +254,7 @@ public class AppGUI extends JFrame {
     private void createClientDashboard() {
         JPanel clientPanel = new JPanel(new BorderLayout());
         clientPanel.setBackground(Color.WHITE);
+        clientPanel.setName("CLIENT");
         
         // Sidebar con menu
         JPanel sidebar = createClientSidebar();
@@ -306,10 +308,8 @@ public class AppGUI extends JFrame {
             
             final String cardName = cardNames[i];
             menuButton.addActionListener(e -> {
-                CardLayout layout = (CardLayout) ((JPanel) mainPanel.getComponent(0)).getLayout();
-                layout.show(mainPanel, "CLIENT");
-                CardLayout contentLayout = (CardLayout) ((JPanel) ((JPanel) mainPanel.getComponent(0)).getComponent(1)).getLayout();
-                contentLayout.show((JPanel) ((JPanel) mainPanel.getComponent(0)).getComponent(1), cardName);
+                // Navigate to the specific card in the client dashboard
+                showClientCard(cardName);
             });
             
             sidebar.add(menuButton);
@@ -488,6 +488,7 @@ public class AppGUI extends JFrame {
     private void createAdminDashboard() {
         JPanel adminPanel = new JPanel(new BorderLayout());
         adminPanel.setBackground(Color.WHITE);
+        adminPanel.setName("ADMIN");
         
         // Sidebar admin
         JPanel sidebar = createAdminSidebar();
@@ -504,6 +505,30 @@ public class AppGUI extends JFrame {
         adminPanel.add(contentPanel, BorderLayout.CENTER);
         
         mainPanel.add(adminPanel, "ADMIN");
+    }
+    
+    private void createCollaboratoreDashboard() {
+        JPanel collaboratorePanel = new JPanel(new BorderLayout());
+        collaboratorePanel.setBackground(Color.WHITE);
+        collaboratorePanel.setName("COLLABORATORE");
+        
+        // Sidebar collaboratore
+        JPanel sidebar = createCollaboratoreSidebar();
+        
+        // Area principale
+        CardLayout contentLayout = new CardLayout();
+        JPanel contentPanel = new JPanel(contentLayout);
+        contentPanel.setBackground(Color.WHITE);
+        
+        contentPanel.add(createDepositoPanel(), "DEPOSITO");
+        contentPanel.add(createPrelievoPanel(), "PRELIEVO");
+        contentPanel.add(createTransazioniGestitePanel(), "TRANSAZIONI_GESTITE");
+        contentPanel.add(createCollaboratoreProfilePanel(), "COLLABORATORE_PROFILE");
+        
+        collaboratorePanel.add(sidebar, BorderLayout.WEST);
+        collaboratorePanel.add(contentPanel, BorderLayout.CENTER);
+        
+        mainPanel.add(collaboratorePanel, "COLLABORATORE");
     }
     
     private JPanel createAdminSidebar() {
@@ -537,10 +562,65 @@ public class AppGUI extends JFrame {
             
             final String cardName = cardNames[i];
             menuButton.addActionListener(e -> {
-                CardLayout layout = (CardLayout) ((JPanel) mainPanel.getComponent(0)).getLayout();
-                layout.show(mainPanel, "ADMIN");
-                CardLayout contentLayout = (CardLayout) ((JPanel) ((JPanel) mainPanel.getComponent(0)).getComponent(1)).getLayout();
-                contentLayout.show((JPanel) ((JPanel) mainPanel.getComponent(0)).getComponent(1), cardName);
+                // Navigate to the specific card in the admin dashboard
+                showAdminCard(cardName);
+            });
+            
+            sidebar.add(menuButton);
+            sidebar.add(Box.createVerticalStrut(10));
+        }
+        
+        sidebar.add(Box.createVerticalGlue());
+        
+        JButton logoutButton = new JButton("🚪 Logout");
+        logoutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        logoutButton.setPreferredSize(new Dimension(180, 40));
+        logoutButton.setMaximumSize(new Dimension(180, 40));
+        logoutButton.setBackground(ERROR_COLOR);
+        logoutButton.setForeground(Color.WHITE);
+        logoutButton.setBorder(null);
+        logoutButton.setFont(new Font("Arial", Font.BOLD, 12));
+        logoutButton.addActionListener(e -> performLogout());
+        
+        sidebar.add(logoutButton);
+        
+        return sidebar;
+    }
+    
+    private JPanel createCollaboratoreSidebar() {
+        JPanel sidebar = new JPanel();
+        sidebar.setPreferredSize(new Dimension(200, 0));
+        sidebar.setBackground(SECONDARY_COLOR);
+        sidebar.setBorder(new EmptyBorder(20, 10, 20, 10));
+        sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
+        
+        JLabel titleLabel = new JLabel("🏦 Collaboratore");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        sidebar.add(titleLabel);
+        sidebar.add(Box.createVerticalStrut(20));
+        
+        String[] menuItems = {"💰 Deposito", "💸 Prelievo", "📊 Transazioni Gestite", "👤 Profilo"};
+        String[] cardNames = {"DEPOSITO", "PRELIEVO", "TRANSAZIONI_GESTITE", "COLLABORATORE_PROFILE"};
+        
+        for (int i = 0; i < menuItems.length; i++) {
+            JButton menuButton = new JButton(menuItems[i]);
+            menuButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            menuButton.setPreferredSize(new Dimension(180, 40));
+            menuButton.setMaximumSize(new Dimension(180, 40));
+            menuButton.setBackground(Color.WHITE);
+            menuButton.setForeground(PRIMARY_COLOR);
+            menuButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(PRIMARY_COLOR, 1),
+                BorderFactory.createEmptyBorder(10, 15, 10, 15)
+            ));
+            menuButton.setFont(new Font("Arial", Font.PLAIN, 12));
+            
+            final String cardName = cardNames[i];
+            menuButton.addActionListener(e -> {
+                // Navigate to the specific card in the collaboratore dashboard
+                showCollaboratoreCard(cardName);
             });
             
             sidebar.add(menuButton);
@@ -727,6 +807,8 @@ public class AppGUI extends JFrame {
                     // Determina il tipo di dashboard da mostrare
                     if ("admin".equalsIgnoreCase(currentUserType)) {
                         cardLayout.show(mainPanel, "ADMIN");
+                    } else if ("collaboratore".equalsIgnoreCase(currentUserType)) {
+                        cardLayout.show(mainPanel, "COLLABORATORE");
                     } else {
                         cardLayout.show(mainPanel, "CLIENT");
                     }
@@ -783,6 +865,93 @@ public class AppGUI extends JFrame {
                 showMessage("Errore durante il logout: " + e.getMessage(), ERROR_COLOR);
             }
         });
+    }
+    
+    private void showClientCard(String cardName) {
+        try {
+            // First show the CLIENT dashboard
+            cardLayout.show(mainPanel, "CLIENT");
+            
+            // Then navigate to the specific card within the client dashboard
+            // Find the client panel and its content panel
+            for (Component comp : mainPanel.getComponents()) {
+                if (comp instanceof JPanel && "CLIENT".equals(((JPanel) comp).getName())) {
+                    JPanel clientPanel = (JPanel) comp;
+                    // The content panel should be the second component (index 1)
+                    if (clientPanel.getComponentCount() > 1) {
+                        Component contentComp = clientPanel.getComponent(1);
+                        if (contentComp instanceof JPanel) {
+                            JPanel contentPanel = (JPanel) contentComp;
+                            if (contentPanel.getLayout() instanceof CardLayout) {
+                                CardLayout contentLayout = (CardLayout) contentPanel.getLayout();
+                                contentLayout.show(contentPanel, cardName);
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error navigating to client card: " + e.getMessage());
+        }
+    }
+    
+    private void showAdminCard(String cardName) {
+        try {
+            // First show the ADMIN dashboard
+            cardLayout.show(mainPanel, "ADMIN");
+            
+            // Then navigate to the specific card within the admin dashboard
+            // Find the admin panel and its content panel
+            for (Component comp : mainPanel.getComponents()) {
+                if (comp instanceof JPanel && "ADMIN".equals(((JPanel) comp).getName())) {
+                    JPanel adminPanel = (JPanel) comp;
+                    // The content panel should be the second component (index 1)
+                    if (adminPanel.getComponentCount() > 1) {
+                        Component contentComp = adminPanel.getComponent(1);
+                        if (contentComp instanceof JPanel) {
+                            JPanel contentPanel = (JPanel) contentComp;
+                            if (contentPanel.getLayout() instanceof CardLayout) {
+                                CardLayout contentLayout = (CardLayout) contentPanel.getLayout();
+                                contentLayout.show(contentPanel, cardName);
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error navigating to admin card: " + e.getMessage());
+        }
+    }
+    
+    private void showCollaboratoreCard(String cardName) {
+        try {
+            // First show the COLLABORATORE dashboard
+            cardLayout.show(mainPanel, "COLLABORATORE");
+            
+            // Then navigate to the specific card within the collaboratore dashboard
+            // Find the collaboratore panel and its content panel
+            for (Component comp : mainPanel.getComponents()) {
+                if (comp instanceof JPanel && "COLLABORATORE".equals(((JPanel) comp).getName())) {
+                    JPanel collaboratorePanel = (JPanel) comp;
+                    // The content panel should be the second component (index 1)
+                    if (collaboratorePanel.getComponentCount() > 1) {
+                        Component contentComp = collaboratorePanel.getComponent(1);
+                        if (contentComp instanceof JPanel) {
+                            JPanel contentPanel = (JPanel) contentComp;
+                            if (contentPanel.getLayout() instanceof CardLayout) {
+                                CardLayout contentLayout = (CardLayout) contentPanel.getLayout();
+                                contentLayout.show(contentPanel, cardName);
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error navigating to collaboratore card: " + e.getMessage());
+        }
     }
     
     private void updateBalance() {
@@ -990,6 +1159,198 @@ public class AppGUI extends JFrame {
     private void showTransactionHistory() {
         try {
             String result = serverStub.visualizzaStoricoTransazioni(currentUserID);
+            showMessage(result.replace("SUCCESS: ", ""), PRIMARY_COLOR);
+        } catch (Exception e) {
+            showMessage("Errore: " + e.getMessage(), ERROR_COLOR);
+        }
+    }
+    
+    // === METODI COLLABORATORE ===
+    
+    private JPanel createDepositoPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(Color.WHITE);
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        
+        JLabel titleLabel = new JLabel("💰 Gestione Deposito");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(PRIMARY_COLOR);
+        titleLabel.setBorder(new EmptyBorder(0, 0, 20, 0));
+        
+        // Form per deposito
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(Color.WHITE);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        
+        // Cliente ID
+        gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = GridBagConstraints.WEST;
+        formPanel.add(new JLabel("ID Cliente:"), gbc);
+        gbc.gridx = 1; gbc.fill = GridBagConstraints.HORIZONTAL;
+        JTextField clienteField = new JTextField(20);
+        clienteField.setFont(new Font("Arial", Font.PLAIN, 14));
+        formPanel.add(clienteField, gbc);
+        
+        // Importo
+        gbc.gridx = 0; gbc.gridy = 1; gbc.fill = GridBagConstraints.NONE;
+        formPanel.add(new JLabel("Importo (€):"), gbc);
+        gbc.gridx = 1; gbc.fill = GridBagConstraints.HORIZONTAL;
+        JTextField importoField = new JTextField(20);
+        importoField.setFont(new Font("Arial", Font.PLAIN, 14));
+        formPanel.add(importoField, gbc);
+        
+        // Pulsante deposito
+        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2; gbc.fill = GridBagConstraints.NONE;
+        JButton depositoButton = createStyledButton("Processa Deposito", SUCCESS_COLOR, Color.WHITE);
+        depositoButton.addActionListener(e -> {
+            try {
+                String clienteID = clienteField.getText().trim();
+                double importo = Double.parseDouble(importoField.getText().trim());
+                
+                if (clienteID.isEmpty()) {
+                    showMessage("Inserisci l'ID del cliente", ERROR_COLOR);
+                    return;
+                }
+                
+                String result = serverStub.gestisciDeposito(currentUserID, clienteID, importo);
+                if (result.startsWith("SUCCESS:")) {
+                    showMessage(result.replace("SUCCESS: ", ""), SUCCESS_COLOR);
+                    clienteField.setText("");
+                    importoField.setText("");
+                } else {
+                    showMessage(result.replace("ERROR: ", ""), ERROR_COLOR);
+                }
+            } catch (NumberFormatException ex) {
+                showMessage("Importo non valido", ERROR_COLOR);
+            } catch (Exception ex) {
+                showMessage("Errore: " + ex.getMessage(), ERROR_COLOR);
+            }
+        });
+        formPanel.add(depositoButton, gbc);
+        
+        panel.add(titleLabel, BorderLayout.NORTH);
+        panel.add(formPanel, BorderLayout.CENTER);
+        
+        return panel;
+    }
+    
+    private JPanel createPrelievoPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(Color.WHITE);
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        
+        JLabel titleLabel = new JLabel("💸 Gestione Prelievo");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(PRIMARY_COLOR);
+        titleLabel.setBorder(new EmptyBorder(0, 0, 20, 0));
+        
+        // Form per prelievo
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(Color.WHITE);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        
+        // Cliente ID
+        gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = GridBagConstraints.WEST;
+        formPanel.add(new JLabel("ID Cliente:"), gbc);
+        gbc.gridx = 1; gbc.fill = GridBagConstraints.HORIZONTAL;
+        JTextField clienteField = new JTextField(20);
+        clienteField.setFont(new Font("Arial", Font.PLAIN, 14));
+        formPanel.add(clienteField, gbc);
+        
+        // Importo
+        gbc.gridx = 0; gbc.gridy = 1; gbc.fill = GridBagConstraints.NONE;
+        formPanel.add(new JLabel("Importo (€):"), gbc);
+        gbc.gridx = 1; gbc.fill = GridBagConstraints.HORIZONTAL;
+        JTextField importoField = new JTextField(20);
+        importoField.setFont(new Font("Arial", Font.PLAIN, 14));
+        formPanel.add(importoField, gbc);
+        
+        // Pulsante prelievo
+        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2; gbc.fill = GridBagConstraints.NONE;
+        JButton prelievoButton = createStyledButton("Processa Prelievo", WARNING_COLOR, Color.WHITE);
+        prelievoButton.addActionListener(e -> {
+            try {
+                String clienteID = clienteField.getText().trim();
+                double importo = Double.parseDouble(importoField.getText().trim());
+                
+                if (clienteID.isEmpty()) {
+                    showMessage("Inserisci l'ID del cliente", ERROR_COLOR);
+                    return;
+                }
+                
+                String result = serverStub.gestisciPrelievo(currentUserID, clienteID, importo);
+                if (result.startsWith("SUCCESS:")) {
+                    showMessage(result.replace("SUCCESS: ", ""), SUCCESS_COLOR);
+                    clienteField.setText("");
+                    importoField.setText("");
+                } else {
+                    showMessage(result.replace("ERROR: ", ""), ERROR_COLOR);
+                }
+            } catch (NumberFormatException ex) {
+                showMessage("Importo non valido", ERROR_COLOR);
+            } catch (Exception ex) {
+                showMessage("Errore: " + ex.getMessage(), ERROR_COLOR);
+            }
+        });
+        formPanel.add(prelievoButton, gbc);
+        
+        panel.add(titleLabel, BorderLayout.NORTH);
+        panel.add(formPanel, BorderLayout.CENTER);
+        
+        return panel;
+    }
+    
+    private JPanel createTransazioniGestitePanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(Color.WHITE);
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        
+        JLabel titleLabel = new JLabel("📊 Transazioni Gestite");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(PRIMARY_COLOR);
+        titleLabel.setBorder(new EmptyBorder(0, 0, 20, 0));
+        
+        JButton viewButton = createStyledButton("Visualizza Transazioni", PRIMARY_COLOR, Color.WHITE);
+        viewButton.addActionListener(e -> showTransazioniGestite());
+        
+        panel.add(titleLabel, BorderLayout.NORTH);
+        panel.add(viewButton, BorderLayout.CENTER);
+        
+        return panel;
+    }
+    
+    private JPanel createCollaboratoreProfilePanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(Color.WHITE);
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        
+        JLabel titleLabel = new JLabel("👤 Profilo Collaboratore");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(PRIMARY_COLOR);
+        titleLabel.setBorder(new EmptyBorder(0, 0, 20, 0));
+        
+        JButton profileButton = createStyledButton("Visualizza Profilo", PRIMARY_COLOR, Color.WHITE);
+        profileButton.addActionListener(e -> showProfile());
+        
+        panel.add(titleLabel, BorderLayout.NORTH);
+        panel.add(profileButton, BorderLayout.CENTER);
+        
+        return panel;
+    }
+    
+    private void showTransazioniGestite() {
+        try {
+            String result = serverStub.visualizzaTransazioniGestite(currentUserID);
+            showMessage(result.replace("SUCCESS: ", ""), PRIMARY_COLOR);
+        } catch (Exception e) {
+            showMessage("Errore: " + e.getMessage(), ERROR_COLOR);
+        }
+    }
+    
+    private void showProfile() {
+        try {
+            String result = serverStub.visualizzaProfilo(currentUserID);
             showMessage(result.replace("SUCCESS: ", ""), PRIMARY_COLOR);
         } catch (Exception e) {
             showMessage("Errore: " + e.getMessage(), ERROR_COLOR);

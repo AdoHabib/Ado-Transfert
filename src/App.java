@@ -1080,6 +1080,186 @@ public class App {
         }
     }
 
+    // === METODI COLLABORATORE ===
+    
+    /**
+     * Metodo per gestire un deposito per conto di un cliente.
+     * @param collaboratoreID
+     * @param clienteID
+     * @param importo
+     * @return String
+     * @throws RemoteException
+     */
+    public String gestisciDeposito(String collaboratoreID, String clienteID, double importo) throws RemoteException {
+        Utente collaboratore = sessioniAttive.get(collaboratoreID);
+        if (collaboratore == null || !"collaboratore".equalsIgnoreCase(collaboratore.getTipo())) {
+            return "ERROR: Accesso negato. Solo i collaboratori possono gestire depositi.";
+        }
+
+        if (importo <= 0) {
+            return "ERROR: L'importo deve essere maggiore di zero.";
+        }
+
+        try (Connection connection = DriverManager.getConnection(URL, DB_USER, DB_PASSWORD)) {
+            connection.setAutoCommit(false);
+
+            try {
+                // Verifica che il cliente esista
+                String sqlCliente = "SELECT userID, saldo FROM utenti WHERE userID = ? AND tipoUtente = 'cliente'";
+                try (PreparedStatement stmtCliente = connection.prepareStatement(sqlCliente)) {
+                    stmtCliente.setString(1, clienteID);
+                    ResultSet resultSet = stmtCliente.executeQuery();
+                    
+                    if (!resultSet.next()) {
+                        return "ERROR: Cliente non trovato o non valido.";
+                    }
+                    
+                    double saldoAttuale = resultSet.getDouble("saldo");
+                    double nuovoSaldo = saldoAttuale + importo;
+                    
+                    // Aggiorna il saldo del cliente
+                    String sqlUpdate = "UPDATE utenti SET saldo = ? WHERE userID = ?";
+                    try (PreparedStatement stmtUpdate = connection.prepareStatement(sqlUpdate)) {
+                        stmtUpdate.setDouble(1, nuovoSaldo);
+                        stmtUpdate.setString(2, clienteID);
+                        stmtUpdate.executeUpdate();
+                    }
+                    
+                    // Registra la transazione
+                    String sqlTransazione = "INSERT INTO transazioni (tipo, importo, mittenteID, destinatarioID) VALUES (?, ?, ?, ?)";
+                    try (PreparedStatement stmtTransazione = connection.prepareStatement(sqlTransazione)) {
+                        stmtTransazione.setString(1, "Deposito gestito da collaboratore");
+                        stmtTransazione.setDouble(2, importo);
+                        stmtTransazione.setString(3, collaboratoreID);
+                        stmtTransazione.setString(4, clienteID);
+                        stmtTransazione.executeUpdate();
+                    }
+                    
+                    connection.commit();
+                    return "SUCCESS: Deposito di €" + importo + " gestito con successo per il cliente " + clienteID + ". Nuovo saldo: €" + nuovoSaldo;
+                }
+            } catch (SQLException e) {
+                connection.rollback();
+                return "ERROR: Errore durante il deposito: " + e.getMessage();
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            return "ERROR: Errore di connessione: " + e.getMessage();
+        }
+    }
+    
+    /**
+     * Metodo per gestire un prelievo per conto di un cliente.
+     * @param collaboratoreID
+     * @param clienteID
+     * @param importo
+     * @return String
+     * @throws RemoteException
+     */
+    public String gestisciPrelievo(String collaboratoreID, String clienteID, double importo) throws RemoteException {
+        Utente collaboratore = sessioniAttive.get(collaboratoreID);
+        if (collaboratore == null || !"collaboratore".equalsIgnoreCase(collaboratore.getTipo())) {
+            return "ERROR: Accesso negato. Solo i collaboratori possono gestire prelievi.";
+        }
+
+        if (importo <= 0) {
+            return "ERROR: L'importo deve essere maggiore di zero.";
+        }
+
+        try (Connection connection = DriverManager.getConnection(URL, DB_USER, DB_PASSWORD)) {
+            connection.setAutoCommit(false);
+
+            try {
+                // Verifica che il cliente esista e abbia fondi sufficienti
+                String sqlCliente = "SELECT userID, saldo FROM utenti WHERE userID = ? AND tipoUtente = 'cliente'";
+                try (PreparedStatement stmtCliente = connection.prepareStatement(sqlCliente)) {
+                    stmtCliente.setString(1, clienteID);
+                    ResultSet resultSet = stmtCliente.executeQuery();
+                    
+                    if (!resultSet.next()) {
+                        return "ERROR: Cliente non trovato o non valido.";
+                    }
+                    
+                    double saldoAttuale = resultSet.getDouble("saldo");
+                    if (saldoAttuale < importo) {
+                        return "ERROR: Saldo insufficiente. Saldo disponibile: €" + saldoAttuale;
+                    }
+                    
+                    double nuovoSaldo = saldoAttuale - importo;
+                    
+                    // Aggiorna il saldo del cliente
+                    String sqlUpdate = "UPDATE utenti SET saldo = ? WHERE userID = ?";
+                    try (PreparedStatement stmtUpdate = connection.prepareStatement(sqlUpdate)) {
+                        stmtUpdate.setDouble(1, nuovoSaldo);
+                        stmtUpdate.setString(2, clienteID);
+                        stmtUpdate.executeUpdate();
+                    }
+                    
+                    // Registra la transazione
+                    String sqlTransazione = "INSERT INTO transazioni (tipo, importo, mittenteID, destinatarioID) VALUES (?, ?, ?, ?)";
+                    try (PreparedStatement stmtTransazione = connection.prepareStatement(sqlTransazione)) {
+                        stmtTransazione.setString(1, "Prelievo gestito da collaboratore");
+                        stmtTransazione.setDouble(2, importo);
+                        stmtTransazione.setString(3, clienteID);
+                        stmtTransazione.setString(4, collaboratoreID);
+                        stmtTransazione.executeUpdate();
+                    }
+                    
+                    connection.commit();
+                    return "SUCCESS: Prelievo di €" + importo + " gestito con successo per il cliente " + clienteID + ". Nuovo saldo: €" + nuovoSaldo;
+                }
+            } catch (SQLException e) {
+                connection.rollback();
+                return "ERROR: Errore durante il prelievo: " + e.getMessage();
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            return "ERROR: Errore di connessione: " + e.getMessage();
+        }
+    }
+    
+    /**
+     * Metodo per visualizzare le transazioni gestite da un collaboratore.
+     * @param collaboratoreID
+     * @return String
+     * @throws RemoteException
+     */
+    public String visualizzaTransazioniGestite(String collaboratoreID) throws RemoteException {
+        Utente collaboratore = sessioniAttive.get(collaboratoreID);
+        if (collaboratore == null || !"collaboratore".equalsIgnoreCase(collaboratore.getTipo())) {
+            return "ERROR: Accesso negato. Solo i collaboratori possono accedere a questa funzione.";
+        }
+
+        try (Connection connection = DriverManager.getConnection(URL, DB_USER, DB_PASSWORD)) {
+            String sql = "SELECT t.*, u.nome, u.cognome FROM transazioni t " +
+                       "JOIN utenti u ON t.destinatarioID = u.userID " +
+                       "WHERE t.mittenteID = ? AND (t.tipo LIKE '%gestito da collaboratore%') " +
+                       "ORDER BY t.data_transazione DESC";
+            
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, collaboratoreID);
+                ResultSet resultSet = statement.executeQuery();
+                
+                StringBuilder result = new StringBuilder("=== TRANSAZIONI GESTITE ===\n");
+                result.append("Tipo\tImporto\tCliente\tData\n");
+                result.append("----------------------------------------\n");
+                
+                while (resultSet.next()) {
+                    result.append(resultSet.getString("tipo")).append("\t")
+                          .append("€").append(resultSet.getDouble("importo")).append("\t")
+                          .append(resultSet.getString("nome")).append(" ").append(resultSet.getString("cognome")).append("\t")
+                          .append(resultSet.getTimestamp("data_transazione")).append("\n");
+                }
+                
+                return "SUCCESS: " + result.toString();
+            }
+        } catch (SQLException e) {
+            return "ERROR: Errore durante la visualizzazione: " + e.getMessage();
+        }
+    }
+
     // === UTILITÀ ===
     
     /**
@@ -1237,7 +1417,7 @@ public class App {
                 String createUtentiSQL = 
                     "CREATE TABLE IF NOT EXISTS utenti (" +
                     "    id INT AUTO_INCREMENT PRIMARY KEY, " +
-                    "    tipoUtente ENUM('admin', 'cliente') NOT NULL, " +
+                    "    tipoUtente ENUM('admin', 'cliente', 'collaboratore') NOT NULL, " +
                     "    nome VARCHAR(100) NOT NULL, " +
                     "    cognome VARCHAR(100) NOT NULL, " +
                     "    userID varchar(220) not null unique," +

@@ -141,6 +141,20 @@ public class InterfaceImpl extends UnicastRemoteObject implements InterfaceTrans
         return app.eliminaUtente(adminID, userID);
     }
 
+    // === METODI COLLABORATORE ===
+    
+    public String gestisciDeposito(String collaboratoreID, String clienteID, double importo) throws RemoteException {
+        return app.gestisciDeposito(collaboratoreID, clienteID, importo);
+    }
+    
+    public String gestisciPrelievo(String collaboratoreID, String clienteID, double importo) throws RemoteException {
+        return app.gestisciPrelievo(collaboratoreID, clienteID, importo);
+    }
+    
+    public String visualizzaTransazioniGestite(String collaboratoreID) throws RemoteException {
+        return app.visualizzaTransazioniGestite(collaboratoreID);
+    }
+
     // === UTILITÀ ===
     
     

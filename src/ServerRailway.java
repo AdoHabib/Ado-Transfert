@@ -21,6 +21,16 @@ public class ServerRailway {
                 System.exit(1);
             }
             
+            // Ottieni il dominio pubblico Railway
+            String railwayDomain = System.getenv("RAILWAY_PUBLIC_DOMAIN");
+            if (railwayDomain == null || railwayDomain.trim().isEmpty()) {
+                railwayDomain = "localhost";
+            }
+            
+            // Imposta l'hostname RMI per Railway
+            System.setProperty("java.rmi.server.hostname", railwayDomain);
+            System.out.println("Hostname RMI impostato su: " + railwayDomain);
+            
             System.out.println("Connessione al database con credenziali Railway...");
             
             // Esporta l'oggetto remoto con la password del database da variabili d'ambiente
@@ -36,7 +46,7 @@ public class ServerRailway {
             
             System.out.println("=== SERVER AVVIATO CON SUCCESSO ===");
             System.out.println("Il server è in ascolto per connessioni client...");
-            System.out.println("Hostname Railway: " + System.getenv("RAILWAY_PUBLIC_DOMAIN"));
+            System.out.println("Hostname Railway: " + railwayDomain);
             
             // Mantiene il server in esecuzione
             while (true) {

@@ -43,6 +43,11 @@ public interface InterfaceTransfer extends Remote {
     public String bloccaUtente(String adminID, String userID) throws RemoteException;
     public String eliminaUtente(String adminID, String userID) throws RemoteException;
     
+    // === METODI COLLABORATORE ===
+    public String gestisciDeposito(String collaboratoreID, String clienteID, double importo) throws RemoteException;
+    public String gestisciPrelievo(String collaboratoreID, String clienteID, double importo) throws RemoteException;
+    public String visualizzaTransazioniGestite(String collaboratoreID) throws RemoteException;
+    
     // === UTILITÀ ===
     public String testConnection() throws RemoteException;
     public String getServerStatus() throws RemoteException;
