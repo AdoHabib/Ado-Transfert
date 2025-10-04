@@ -49,3 +49,4 @@ java -cp "bin;lib\*" -Djava.rmi.server.hostname=%RAILWAY_PUBLIC_DOMAIN% ServerRa
 echo.
 echo 🏁 Server Railway avviato.
 pause
+

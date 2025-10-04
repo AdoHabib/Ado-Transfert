@@ -130,3 +130,4 @@ Il sistema Ado-Transfert ora supporta **tre tipi di utenti** con funzionalità s
 ## 🎉 **Sistema Pronto!**
 
 Il sistema Ado-Transfert è ora completamente funzionale con il supporto per tre livelli di utenti, offrendo un controllo completo e sicuro delle operazioni finanziarie.
+

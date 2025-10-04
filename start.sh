@@ -33,14 +33,39 @@ fi
 
 # Verifica configurazione database
 echo "🔧 Verifica configurazione database..."
+
+# Utilizza le variabili Railway se disponibili, altrimenti usa i default
 if [ -z "$ADO_DB_HOST" ]; then
-    echo "⚠️ ADO_DB_HOST non impostato, usando localhost"
-    export ADO_DB_HOST="localhost"
+    if [ -n "$MYSQL_HOST" ]; then
+        echo "✅ Usando MYSQL_HOST da Railway: $MYSQL_HOST"
+        export ADO_DB_HOST="$MYSQL_HOST"
+    else
+        echo "⚠️ ADO_DB_HOST non impostato, usando localhost"
+        export ADO_DB_HOST="localhost"
+    fi
 fi
 
 if [ -z "$ADO_DB_PASSWORD" ]; then
-    echo "⚠️ ADO_DB_PASSWORD non impostato, usando default"
-    export ADO_DB_PASSWORD="1234"
+    if [ -n "$MYSQL_PASSWORD" ]; then
+        echo "✅ Usando MYSQL_PASSWORD da Railway"
+        export ADO_DB_PASSWORD="$MYSQL_PASSWORD"
+    else
+        echo "⚠️ ADO_DB_PASSWORD non impostato, usando default"
+        export ADO_DB_PASSWORD="1234"
+    fi
+fi
+
+# Configurazione automatica Railway
+if [ -n "$MYSQL_PORT" ]; then
+    export ADO_DB_PORT="$MYSQL_PORT"
+fi
+
+if [ -n "$MYSQL_DATABASE" ]; then
+    export ADO_DB_NAME="$MYSQL_DATABASE"
+fi
+
+if [ -n "$MYSQL_USER" ]; then
+    export ADO_DB_USER="$MYSQL_USER"
 fi
 
 # Mostra configurazione (senza password)

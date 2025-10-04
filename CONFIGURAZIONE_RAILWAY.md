@@ -105,3 +105,4 @@ Il sistema ora supporta:
 - ✅ **Configurazione automatica** hostname RMI
 
 **Il sistema è pronto per il deployment su Railway!** 🚀
+
